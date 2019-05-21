@@ -1,4 +1,4 @@
-from products import Product
+from products_stretch import Product
 
 class ShoppingCart:
 
@@ -11,15 +11,17 @@ class ShoppingCart:
     
     def add_item(self, product):
         self.products.append(product)
-        for item in self.cart_items.items():
-            if item == product:
-                self.cart_items[product] += 1
-            else: 
-                self.cart_items[product] = 1
+
+        if product.name in self.cart_items.keys():
+            self.cart_items[product.name] += 1
+        else: 
+            self.cart_items[product.name] = 1  
+
         return "You added {} to your cart.".format(product.name)
 
     def rem_item(self, product):
         self.products.remove(product)
+        self.cart_items[product.name] -= 1
         return "You removed {} from your cart.".format(product.name)
 
     def subtotal(self):
@@ -50,6 +52,13 @@ class ShoppingCart:
         expensive_item = max(prices)
         return "The most expensive item is {} at ${}".format(product.name, expensive_item)
 
+    def quantity_of(self):
+        print("Enter the product name to view the quantity of that item in your cart.")
+        inquiry_product = input()
+        for product, quantity in self.cart_items.items():
+            if product == inquiry_product:
+                return self.cart_items[product]
+
 train = Product('Thomas the Tank Engine', 15)
 car = Product('Lightning McQueen', 25)
 bus = Product('The Magic School Bus', 20)
@@ -65,9 +74,10 @@ shopping_cart.rem_item(car)
 
 print(shopping_cart)
 print(shopping_cart.subtotal())
-print(shopping_cart.total())
+# print(shopping_cart.total())
 print(shopping_cart.most_expensive())
-# print(ShoppingCart.cart_items)
+print(shopping_cart.cart_items)
+print(shopping_cart.quantity_of())
 
 # STRETCH GOALS
 # Add the ability to find the most expensive product in a cart.
